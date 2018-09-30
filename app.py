@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template_string, request
+from flask import Flask, redirect, render_template_string, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -16,9 +16,6 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=True, nullable=False)
     ssn = db.Column(db.String, unique=True, nullable=False)
-
-    def __repr__(self):
-        return '<User %r>' % self.id
 
 
 @app.route('/')
@@ -47,6 +44,15 @@ def sign_up():
             </div>
         </form>
         ''')
+    email = request.form['email']
+    ssn = request.form['ssn']
+    user = User(
+        email=email,
+        ssn=ssn,
+    )
+    db.session.add(user)
+    db.session.commit()
+    return redirect(url_for('my_credit_score'))
 
 
 @app.route("/my-credit-score")
