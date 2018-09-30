@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, render_template_string, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -21,19 +21,35 @@ class User(db.Model):
         return '<User %r>' % self.id
 
 
-@app.route("/")
-def register():
-    # TODO: handle sign up here
-    return "register"
+@app.route('/')
+def index():
+    return render_template_string('''
+    <a href="{{ url_for('.sign_up') }}">Sign up</a>
+    ''')
 
 
-@app.route("/")
-def login():
-    # TODO: handle sign in here
-    return "login"
+@app.route('/sign-up', methods=['GET', 'POST'])
+def sign_up():
+    if request.method == 'GET':
+        return render_template_string('''
+        Sign-up to see your credit score:
+        <form method="POST">
+            <div>
+                <label for="email">Email:</label>
+                <input name="email" />
+            </div>
+            <div>
+                <label for="ssn">Social Security Number:</label>
+                <input name="ssn" />
+            </div>
+            <div>
+                <input type="submit" />
+            </div>
+        </form>
+        ''')
 
 
-@app.route("/")
+@app.route("/my-credit-score")
 def my_credit_score():
     # TODO: handle my credit score here
     return "my_credit_score"
