@@ -29,7 +29,7 @@ def index():
 def sign_up():
     if request.method == 'GET':
         return render_template_string('''
-        Sign-up to see your credit score:
+        Sign-up to:
         <form method="POST">
             <div>
                 <label for="email">Email:</label>
@@ -55,7 +55,23 @@ def sign_up():
     return redirect(url_for('my_credit_score'))
 
 
-@app.route("/my-credit-score")
+@app.route('/my-credit-score', methods=['GET', 'POST'])
 def my_credit_score():
-    # TODO: handle my credit score here
-    return "my_credit_score"
+    if request.method == 'GET':
+        return render_template_string('''
+        Enter your email to see your credit score:
+        <form method="POST">
+            <div>
+                <label for="email">Email:</label>
+                <input name="email" />
+            </div>
+            <div>
+                <input type="submit" />
+            </div>
+        </form>
+        ''')
+    email = request.form['email']
+    user = User.query.filter_by(email=email).first_or_404()
+    return render_template_string('''
+    Your credit score is: {{score}}    
+    ''', score=1234)
