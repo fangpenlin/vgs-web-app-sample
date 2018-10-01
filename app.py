@@ -72,6 +72,8 @@ def my_credit_score():
         ''')
     email = request.form['email']
     user = User.query.filter_by(email=email).first_or_404()
+    # TODO: query a third-party service for credit score here with the SSN
+    # of our user
     return render_template_string('''
     Your credit score is: {{score}}    
     ''', score=1234)
