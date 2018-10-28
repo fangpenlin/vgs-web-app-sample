@@ -8,6 +8,10 @@
       "FLASK_APP": {
         "description": "Specify the Flask app entry point file to run.",
         "value": "app.py"
+      },
+      "CREDIT_SCORE_API_URL": {
+        "description": "API base URL for credit score querying.",
+        "value": "https://vgs-credit-score-sample-app.herokuapp.com/credit-score"
       }
     },
     "addons": [
