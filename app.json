@@ -2,12 +2,12 @@
     "name": "vgs-web-app-sample",
     "success_url": "/",
     "scripts": {
-      "postdeploy": "FLASK_APP=app.py flask utils create_tables"
+      "postdeploy": "flask utils create_tables"
     },
     "env": {
       "FLASK_APP": {
         "description": "Specify the Flask app entry point file to run.",
-        "value": "autoapp.py"
+        "value": "app.py"
       }
     },
     "addons": [
