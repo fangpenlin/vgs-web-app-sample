@@ -2,6 +2,7 @@ import os
 
 import requests
 from flask import Flask, redirect, render_template_string, request, url_for
+from flask.cli import AppGroup, with_appcontext
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -11,6 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
+utils_cli = AppGroup('utils')
 
 
 class User(db.Model):
@@ -19,13 +21,20 @@ class User(db.Model):
     ssn = db.Column(db.String, unique=True, nullable=False)
 
 
+@utils_cli.command('create_tables')
+@with_appcontext
+def create_tables():
+    db.create_all()
+
+app.cli.add_command(utils_cli)
+
 @app.route('/')
 def index():
     return render_template_string('''
-        <ul>
-            <li><a href="{{ url_for('.sign_up') }}">Sign up</a></li>
-            <li><a href="{{ url_for('.my_credit_score') }}">Check my credit score</a></li>
-        </ul>
+    <ul>
+        <li><a href="{{ url_for('.sign_up') }}">Sign up</a></li>
+        <li><a href="{{ url_for('.my_credit_score') }}">Check my credit score</a></li>
+    </ul>
     ''')
 
 
