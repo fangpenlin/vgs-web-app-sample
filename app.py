@@ -1,5 +1,6 @@
 import os
 
+import requests
 from flask import Flask, redirect, render_template_string, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 
@@ -21,7 +22,10 @@ class User(db.Model):
 @app.route('/')
 def index():
     return render_template_string('''
-    <a href="{{ url_for('.sign_up') }}">Sign up</a>
+        <ul>
+            <li><a href="{{ url_for('.sign_up') }}">Sign up</a></li>
+            <li><a href="{{ url_for('.my_credit_score') }}">Check my credit score</a></li>
+        </ul>
     ''')
 
 
@@ -72,8 +76,8 @@ def my_credit_score():
         ''')
     email = request.form['email']
     user = User.query.filter_by(email=email).first_or_404()
-    # TODO: query a third-party service for credit score here with the SSN
-    # of our user
+    api_url = os.environ['CREDIT_SCORE_API_URL']
+    resp = requests.get(api_url + '?ssn=' + user.ssn)
     return render_template_string('''
     Your credit score is: {{score}}    
-    ''', score=1234)
+    ''', score=resp.json()['credit_score'])
