@@ -87,11 +87,9 @@ def my_credit_score():
     user = User.query.filter_by(email=email).first_or_404()
     api_url = os.environ['CREDIT_SCORE_API_URL']
     current_dir = os.path.dirname(__file__)
-    resp = requests.get(
-        api_url + '?ssn=' + user.ssn,
-        proxies={
-            'http': 'https://US7cKeo446JAdkpMzeuyAnKn:5559fc2b-e8d8-43f6-a7e9-2813f430ca74@tntsyv550xu.sandbox.verygoodproxy.com:8080',
-        },
+    resp = requests.post(
+        api_url,
+        data=dict(ssn=user.ssn),
         verify=os.path.join(current_dir, 'vgs-sandbox-cert.pem'),
     )
     return render_template_string('''
