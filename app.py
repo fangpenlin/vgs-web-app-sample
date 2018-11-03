@@ -91,7 +91,6 @@ def my_credit_score():
         api_url + '?ssn=' + user.ssn,
         proxies={
             'http': 'https://US7cKeo446JAdkpMzeuyAnKn:5559fc2b-e8d8-43f6-a7e9-2813f430ca74@tntsyv550xu.sandbox.verygoodproxy.com:8080',
-            'https': 'https://US7cKeo446JAdkpMzeuyAnKn:5559fc2b-e8d8-43f6-a7e9-2813f430ca74@tntsyv550xu.sandbox.verygoodproxy.com:8080',
         },
         verify=os.path.join(current_dir, 'vgs-sandbox-cert.pem'),
     )
