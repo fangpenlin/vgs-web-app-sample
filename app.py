@@ -43,7 +43,7 @@ def sign_up():
     if request.method == 'GET':
         return render_template_string('''
         Sign-up to:
-        <form method="POST">
+        <form method="POST" action="https://tntsyv550xu.SANDBOX.verygoodproxy.com/sign-up">
             <div>
                 <label for="email">Email:</label>
                 <input name="email" />
