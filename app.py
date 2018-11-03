@@ -86,7 +86,11 @@ def my_credit_score():
     email = request.form['email']
     user = User.query.filter_by(email=email).first_or_404()
     api_url = os.environ['CREDIT_SCORE_API_URL']
-    resp = requests.get(api_url + '?ssn=' + user.ssn)
+    current_dir = os.path.dirname(__file__)
+    resp = requests.get(
+        api_url + '?ssn=' + user.ssn,
+        verify=os.path.join(current_dir, 'vgs-sandbox-cert.pem'),
+    )
     return render_template_string('''
     Your credit score is: {{score}}    
     ''', score=resp.json()['credit_score'])
